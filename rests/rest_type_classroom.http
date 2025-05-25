@@ -1,0 +1,25 @@
+### Buscar todas as categorias
+GET http://localhost:3000/type_classroom
+
+### Buscar categoria por ID
+GET http://localhost:3000/type_classroom/4
+
+### Criar nova categoria
+POST http://localhost:3000/type_classroom
+Content-Type: application/json
+
+{
+  "descricao": "Sala de reunião"
+}
+
+### Atualizar categoria
+PUT http://localhost:3000/type_classroom/4
+Content-Type: application/json
+
+{
+  "descricao": "Sala de palestras"
+  
+}
+
+### Deletar categoria
+DELETE http://localhost:3000/type_classroom/4
