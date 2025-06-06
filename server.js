@@ -1,46 +1,61 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const session = require('express-session');  // <-- importe o express-session
 
-app.use(express.json()); 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-// Configuração para servir arquivos estáticos
-app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const app = express();
+const db = require('./config/db');
+const { supabase } = require('./config/supabaseClient');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
-// Rotas de autenticação
-const authRoutes = require('./routes/authRoutes');
-app.use('/auth', authRoutes);
+// Configuração do express-session (adicione aqui)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'seusegredosecreto', // use variável de ambiente
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // em produção, use true se estiver com HTTPS
+}));
 
-// Rotas das páginas protegidas
-const pageRoutes = require('./routes/pageRoutes');
-app.use('/', pageRoutes);
+// View engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-// Rota principal redireciona para login
-app.get('/', (req, res) => {
-  res.redirect('/auth/login');
-});
+// Arquivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware para lidar com erros de rota não encontrada
-app.use((req, res, next) => {
-  res.status(404).send('Página não encontrada');
-});
+// Resto do seu código (conexão ao banco, rotas, etc)
+db.query('SELECT 1')
+  .then(() => {
+    console.log('Conectado ao banco de dados PostgreSQL');
 
-// Middleware para lidar com erros internos do servidor
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Erro no servidor');
-});
+    app.use('/users/api', require('./routes/userRoutes'));
+    app.use('/classroom/api', require('./routes/classroomRoutes'));
+    app.use('/type_classroom/api', require('./routes/type_classroomRoutes'));
+    app.use('/reservation/api', require('./routes/reservationRoutes'));
+    app.use('/status_reservation/api', require('./routes/status_reservationRoutes'));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+    const authRoutes = require('./routes/authRoutes');
+    app.use('/auth', authRoutes);
+
+    app.use('/', require('./routes/frontRoutes'));
+
+    app.use((req, res, next) => {
+      res.status(404).send('Página não encontrada');
+    });
+
+    app.use((err, req, res, next) => {
+      console.error('Erro no servidor:', err);
+      res.status(500).send('Erro interno no servidor');
+    });
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(` Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error(' Erro ao conectar ao banco de dados:', err.message);
+    process.exit(1);
+  });

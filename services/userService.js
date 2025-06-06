@@ -1,12 +1,16 @@
 // services/userService.js
 
-const supabase = require('../config/supabase');
+const supabase = require('../config/supabaseClient');
 
 // Função para obter todos os usuários
 const getAllUsers = async () => {
   try {
-    const result = await db.query('SELECT * FROM users');
-    return result.rows;
+    const { data, error } = await supabase
+      .from('users')
+      .select('*');
+
+    if (error) throw error;
+    return data;
   } catch (error) {
     throw new Error('Erro ao obter usuários: ' + error.message);
   }
@@ -37,8 +41,14 @@ const createUser = async (nome, email, senha) => {
 // Função para obter um usuário por ID
 const getUserById = async (id) => {
   try {
-    const result = await db.query('SELECT * FROM users WHERE id_users = $1', [id]);
-    return result.rows[0];
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id_users', id)
+      .single();
+
+    if (error) throw error;
+    return data;
   } catch (error) {
     throw new Error('Erro ao obter usuário: ' + error.message);
   }
@@ -47,11 +57,15 @@ const getUserById = async (id) => {
 // Atualizar usuário
 const updateUser = async (id, nome, email) => {
   try {
-    const result = await db.query(
-      'UPDATE users SET nome = $1, email = $2 WHERE id_users = $3 RETURNING *',
-      [nome, email, id]
-    );
-    return result.rows[0];
+    const { data, error } = await supabase
+      .from('users')
+      .update({ nome, email })
+      .eq('id_users', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   } catch (error) {
     throw new Error('Erro ao atualizar usuário: ' + error.message);
   }
@@ -60,8 +74,15 @@ const updateUser = async (id, nome, email) => {
 // Deletar usuário
 const deleteUser = async (id) => {
   try {
-    const result = await db.query('DELETE FROM users WHERE id_users = $1 RETURNING *', [id]);
-    return result.rows[0];
+    const { data, error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id_users', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   } catch (error) {
     throw new Error('Erro ao deletar usuário: ' + error.message);
   }

@@ -1,90 +1,95 @@
 const express = require('express');
 const router = express.Router();
-const userService = require('../services/userService');
+const { supabase } = require('../config/supabaseClient');
 
-// Middleware para verificar autenticação
-const requireAuth = async (req, res, next) => {
-  try {
-    const user = await userService.getCurrentUser();
-    if (!user) {
-      return res.redirect('/auth/login');
-    }
-    req.user = user;
-    next();
-  } catch (error) {
-    res.redirect('/auth/login');
-  }
-};
-
-// Rota para página de login
-router.get('/login', (req, res) => {
-  res.render('login', { message: req.query.message });
-});
-
-// Rota para processar o login
+// Rota de login
 router.post('/login', async (req, res) => {
-  try {
-    const { email, senha } = req.body;
-    const { user, session } = await userService.loginUser(email, senha);
-    
-    if (user && session) {
-      // Armazena o token de sessão em um cookie seguro
-      res.cookie('sb-token', session.access_token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 dias
-      });
-      
-      res.redirect('/inicio');
-    } else {
-      res.render('login', { error: 'Email ou senha inválidos' });
+    try {
+        const { email, password } = req.body;
+
+        // Validação básica
+        if (!email || !password) {
+            return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
+        }
+
+        // Tentativa de login no Supabase
+        const { data: { user }, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            console.error('Erro de autenticação:', error.message);
+            return res.status(401).json({ error: 'E-mail ou senha inválidos' });
+        }
+
+        // Criar sessão
+        req.session.user = {
+            id: user.id,
+            email: user.email,
+            nome: user.user_metadata?.nome || email.split('@')[0], // Tenta pegar o nome dos metadados
+            created_at: user.created_at
+        };
+
+        // Responder com sucesso
+        res.json({ 
+            message: 'Login realizado com sucesso',
+            redirect: '/inicio'
+        });
+
+    } catch (error) {
+        console.error('Erro interno:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
     }
-  } catch (error) {
-    res.render('login', { error: error.message });
-  }
 });
 
-// Rota para página de cadastro
-router.get('/cadastro', (req, res) => {
-  res.render('cadastro/cadastro');
-});
+// Rota de registro
+router.post('/registro', async (req, res) => {
+    try {
+        const { nome, email, password } = req.body;
 
-// Rota para processar o cadastro
-router.post('/cadastro', async (req, res) => {
-  try {
-    const { nome, email, senha, confirmarSenha } = req.body;
-    
-    if (senha !== confirmarSenha) {
-      return res.render('cadastro/cadastro', { error: 'As senhas não coincidem' });
+        // Validação básica
+        if (!nome || !email || !password) {
+            return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+        }
+
+        // Criar usuário no Supabase
+        const { data: { user }, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { 
+                    nome: nome // Salvando o nome nos metadados do usuário
+                }
+            }
+        });
+
+        if (error) {
+            console.error('Erro no registro:', error.message);
+            return res.status(400).json({ error: error.message });
+        }
+
+        // Responder com sucesso
+        res.json({ 
+            message: 'Cadastro realizado com sucesso',
+            redirect: '/login?msg=registro-sucesso'
+        });
+
+    } catch (error) {
+        console.error('Erro interno:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
     }
-
-    const { user } = await userService.createUser(nome, email, senha);
-    
-    if (user) {
-      res.redirect('/auth/login?message=Cadastro realizado com sucesso! Faça login para continuar.');
-    } else {
-      res.render('cadastro/cadastro', { error: 'Erro ao criar usuário' });
-    }
-  } catch (error) {
-    res.render('cadastro/cadastro', { error: error.message });
-  }
 });
 
-// Rota para logout
-router.get('/logout', async (req, res) => {
-  try {
-    await userService.logoutUser();
-    res.clearCookie('sb-token');
-    res.redirect('/auth/login');
-  } catch (error) {
-    res.redirect('/auth/login');
-  }
-});
-
-// Rota para página inicial (protegida)
-router.get('/inicio', requireAuth, (req, res) => {
-  res.render('inicio', { user: req.user });
+// Rota de logout
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Erro ao destruir sessão:', err);
+            return res.status(500).json({ error: 'Erro ao fazer logout' });
+        }
+        res.redirect('/login');
+    });
 });
 
 module.exports = router; 

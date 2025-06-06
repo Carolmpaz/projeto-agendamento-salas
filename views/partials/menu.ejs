@@ -1,0 +1,41 @@
+<!-- Menu Lateral -->
+<div class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out" id="side-menu">
+  <div class="w-64 bg-white h-full shadow-lg">
+    <div class="flex items-center justify-center h-20 bg-primary">
+      <h1 class="text-white text-2xl font-bold">MeetSpace</h1>
+    </div>
+    <nav class="mt-4">
+      <a href="/inicio" class="flex items-center px-6 py-3 text-gray-600 <%= currentPage === 'inicio' ? 'bg-gray-100' : 'hover:bg-gray-100' %>">
+        <span class="mr-3">🏠</span>
+        Tela inicial
+      </a>
+      <a href="/reservas" class="flex items-center px-6 py-3 text-gray-600 <%= currentPage === 'reservas' ? 'bg-gray-100' : 'hover:bg-gray-100' %>">
+        <span class="mr-3">📋</span>
+        Minhas reservas
+      </a>
+      <a href="/reservas/nova" class="flex items-center px-6 py-3 text-gray-600 <%= currentPage === 'nova-reserva' ? 'bg-gray-100' : 'hover:bg-gray-100' %>">
+        <span class="mr-3">➕</span>
+        Nova reserva
+      </a>
+      <a href="/salas" class="flex items-center px-6 py-3 text-gray-600 <%= currentPage === 'salas' ? 'bg-gray-100' : 'hover:bg-gray-100' %>">
+        <span class="mr-3">🏢</span>
+        Salas
+      </a>
+    </nav>
+  </div>
+</div>
+
+<!-- Botão do Menu (visível apenas em mobile) -->
+<button class="md:hidden fixed top-4 left-4 z-20 bg-primary text-white p-2 rounded-md" id="menu-btn">
+  ☰
+</button>
+
+<script>
+  // Menu toggle para mobile
+  const menuBtn = document.getElementById('menu-btn');
+  const sideMenu = document.getElementById('side-menu');
+  
+  menuBtn.addEventListener('click', () => {
+    sideMenu.classList.toggle('-translate-x-full');
+  });
+</script> 
