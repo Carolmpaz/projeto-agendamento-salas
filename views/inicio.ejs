@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MeetSpace - Início</title>
+  <link rel="stylesheet" href="/public/css/inicio.css"/>
+  <script defer src="/public/js/menu.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="top-bar">
+      <div class="menu-icon" id="menu-btn">&#9776;</div>
+      <span class="brand">Meet<br>Space</span>
+      <div class="user-info">
+        <span><%= user.user_metadata.nome %></span>
+        <a href="/auth/logout" class="logout-btn">Sair</a>
+      </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+      <ul>
+        <li><a href="/inicio" class="active"><i class="icon">🏠</i> Início</a></li>
+        <li><a href="/reserva"><i class="icon">➕</i> Nova reserva</a></li>
+        <li><a href="/minhas-reservas"><i class="icon">📅</i> Minhas Reservas</a></li>
+        <li><a href="/salas"><i class="icon">🪑</i> Salas</a></li>
+        <li><a href="/perfil"><i class="icon">👤</i> Perfil</a></li>
+      </ul>
+    </nav>
+
+    <main class="conteudo-home">
+      <div class="logo">
+        <img src="/assets/logo_azul.png" alt="Logo Meet Space" />
+        <h1>Meet<br>Space</h1>
+      </div>
+      <h2>
+        <strong>Bem-vindo, <%= user.user_metadata.nome %>!</strong>
+        <br>ao seu site de reservas.
+      </h2>
+      <p>Encontre aqui a sala ideal para a sua necessidade.</p>
+
+      <div class="quick-actions">
+        <a href="/reserva" class="action-btn">
+          <i class="icon">➕</i>
+          <span>Nova Reserva</span>
+        </a>
+        <a href="/minhas-reservas" class="action-btn">
+          <i class="icon">📅</i>
+          <span>Minhas Reservas</span>
+        </a>
+        <a href="/salas" class="action-btn">
+          <i class="icon">🪑</i>
+          <span>Ver Salas</span>
+        </a>
+      </div>
+    </main>
+  </div>
+</body>
+</html> 

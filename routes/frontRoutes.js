@@ -2,21 +2,31 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-// Roteamento para páginas dinâmicas
 router.get('/', (req, res) => {
-  res.render(path.join(__dirname, '../views/layout/main'), {
-    pageTitle: 'Página Inicial',
-    content: path.join(__dirname, '../views/pages/page1')
+  res.render('index', {
+    title: 'Página Inicial',
+    message: 'Bem-vindo ao aplicativo com EJS e CSS!'
   });
 });
 
-router.get('/about', (req, res) => {
-  res.render(path.join(__dirname, '../views/layout/main'), {
-    pageTitle: 'Página Inicial',
-    content: path.join(__dirname, '../views/pages/page2')
-  });
+router.get('/classroom', (req, res) => {
+  res.render('classroom', { title: 'Salas' });
 });
 
-// Adicione outras rotas conforme necessário
+router.get('/status_reservation', (req, res) => {
+  res.render('status_reservation', { title: 'Status de Reserva' });
+});
+
+router.get('/users', (req, res) => {
+  res.render('users', { title: 'Usuários' });
+});
+
+router.get('/reservation', (req, res) => {
+  res.render('reservation', { title: 'Reservas' });
+});
+
+router.get('/type_classroom', (req, res) => {
+  res.render('type_classroom', { title: 'Tipos de Salas' });
+});
 
 module.exports = router;

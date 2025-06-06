@@ -1,0 +1,93 @@
+/* Top Bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #000;
+  background-color: white;
+  padding: 10px 20px;
+  margin-bottom: 40%;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+  position: absolute;
+  top: 55px;
+  left: 10px;
+  background-color: #050043;
+  border-radius: 10px;
+  width: 150px;
+  display: none;
+  flex-direction: column;
+  padding: 10px 0;
+  z-index: 99;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 20px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20%;
+}
+
+.logo img {
+  width: 100px;
+  display: block;
+  margin: 0 10px;
+}
+
+.logo h1 {
+  font-size: 48px;
+  margin: 0;
+  line-height: 1;
+}
+
+.sidebar ul li a .icon {
+  margin-right: 10px;
+}
+
+.sidebar.show {
+  display: flex;
+}
+
+/* Conteúdo central */
+.conteudo-home {
+  margin-top: 60px;
+  text-align: center;
+  padding: 20px;
+  color: #050043;
+}
+
+.logo-home {
+  width: 70px;
+  margin-bottom: 20px;
+}
+
+.brand {
+  font-weight: bold;
+  color: #050043;
+  text-align: right;
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salas Disponíveis</title>
+  <link rel="stylesheet" href="salas.css">
+  <script defer src="../public/js/menu.js"></script>
+</head>
+
+<body>
+        <header class="top-bar">
+        <!-- Botão do menu -->
+        <div id="menu-btn" class="menu-hamburguer">☰</div>
+
+        <!-- Aba lateral -->
+        <nav id="side-menu" class="menu-lateral oculto">
+        <ul>
+            <li><a href="/home">🏠 Tela inicial</a></li>
+            <li><a href="/minhas-reservas">📋 Minhas reservas</a></li>
+            <li><a href="/nova-reserva">➕ Nova reserva</a></li>
+            <li><a href="/salas">🏢 Salas</a></li>
+            <li><a href="/perfil">👤 Perfil</a></li>
+        </ul>
+        </nav>
+
+
+
+  <h2 class="titulo">Salas disponíveis</h2>
+
+  <div class="salas-container" id="salas-container">
+    <!-- Salas serão inseridas aqui via JavaScript -->
+  </div>
+
+  <script src="menu.js"></script>
+  <script>
+    // Simula dados vindos do backend
+    const salas = [
+      { nome: 'Sala Alpha', capacidade: '12', localizacao: '2º andar', tipo: 'Reunião' },
+      { nome: 'Sala Beta', capacidade: '20', localizacao: 'Térreo', tipo: 'Workshop' },
+      { nome: 'Sala Gama', capacidade: '8', localizacao: '3º andar', tipo: 'Individual' }
+    ];
+
+    const container = document.getElementById('salas-container');
+    salas.forEach((sala, index) => {
+      const card = document.createElement('div');
+      card.classList.add('sala-card');
+      card.innerHTML = `
+        <h3>Sala ${index + 1}</h3>
+        <p><strong>Nome:</strong> ${sala.nome}</p>
+        <p><strong>Capacidade:</strong> ${sala.capacidade}</p>
+        <p><strong>Localização:</strong> ${sala.localizacao}</p>
+        <p><strong>Tipo:</strong> ${sala.tipo}</p>
+      `;
+      container.appendChild(card);
+    });
+
+        
+    const btnMenu = document.getElementById('menu-btn');
+    const menuLateral = document.getElementById('side-menu');
+
+    btnMenu.addEventListener('click', () => {
+        menuLateral.classList.toggle('ativo');
+    });
+
+    // Se quiser que clique fora feche o menu:
+    document.addEventListener('click', (e) => {
+        if (!menuLateral.contains(e.target) && !btnMenu.contains(e.target)) {
+        menuLateral.classList.remove('ativo');
+        }
+    });
+
+
+  </script>
+</body>
+</html>

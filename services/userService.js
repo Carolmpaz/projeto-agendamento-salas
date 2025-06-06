@@ -1,6 +1,6 @@
 // services/userService.js
 
-const db = require('../config/db');
+const supabase = require('../config/supabase');
 
 // Função para obter todos os usuários
 const getAllUsers = async () => {
@@ -15,16 +15,24 @@ const getAllUsers = async () => {
 // Função para criar um novo usuário
 const createUser = async (nome, email, senha) => {
   try {
-    const result = await db.query(
-      'INSERT INTO users (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
-      [nome, email, senha]
-    );
-    return result.rows[0];
+    // Registra o usuário no sistema de autenticação do Supabase
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: {
+        data: {
+          nome: nome
+        }
+      }
+    });
+
+    if (authError) throw new Error(authError.message);
+
+    return authData;
   } catch (error) {
     throw new Error('Erro ao criar usuário: ' + error.message);
   }
 };
-
 
 // Função para obter um usuário por ID
 const getUserById = async (id) => {
@@ -59,10 +67,55 @@ const deleteUser = async (id) => {
   }
 };
 
+// Função para login do usuário
+const loginUser = async (email, senha) => {
+  try {
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha
+    });
+
+    if (authError) throw new Error(authError.message);
+
+    return authData;
+  } catch (error) {
+    throw new Error('Erro ao fazer login: ' + error.message);
+  }
+};
+
+// Função para obter dados do usuário atual
+const getCurrentUser = async () => {
+  try {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    
+    if (error) throw new Error(error.message);
+    
+    return user;
+  } catch (error) {
+    throw new Error('Erro ao obter usuário: ' + error.message);
+  }
+};
+
+// Função para logout do usuário
+const logoutUser = async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) throw new Error(error.message);
+    
+    return true;
+  } catch (error) {
+    throw new Error('Erro ao fazer logout: ' + error.message);
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser,
+  getCurrentUser,
+  logoutUser
 };
