@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.10",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "nodemon": "^3.1.10",
-    "pg": "^8.15.6"
+    "pg": "^8.16.0"
   },
   "description": ""
 }
