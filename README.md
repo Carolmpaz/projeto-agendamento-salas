@@ -190,6 +190,36 @@ Abaixo estão listados os principais endpoints disponíveis organizados por recu
 - **PUT** → Atualizar registros existentes (ex: editar status da reserva)
 - **DELETE** → Excluir dados (ex: deletar reserva)
 
+Funcionalidades do Sistema
+
+Back-end
+
+- API RESTful completa
+- Validação de dados com Joi
+- Hash de senhas com bcrypt
+- Organização em camadas: models, services, controllers e routes
+
+Front-end com EJS e Tailwind
+
+- Página de salas: lista todas as salas cadastradas
+- Nova reserva: formulário para criação de reservas
+- Minhas reservas: lista de reservas feitas pelo usuário
+- Login: página de autenticação de usuário
+- Cadastro: criação de conta de usuário
+- Início: página inicial após login
+- Estilização com Tailwind CSS
+
+Estrutura das Views (EJS)
+
+As views estão localizadas na pasta views/ e incluem:
+- salas.ejs – Exibe as salas disponíveis
+- nova-reserva.ejs – Formulário para nova reserva
+- minhas-reservas.ejs – Visualização das reservas realizadas
+- login.ejs – Tela de login do sistema
+- cadastro.ejs – Tela de cadastro de novo usuário
+- inicio.ejs – Página inicial do sistema após login
+
+
 ## Comandos Úteis
 
 * `npm start` : Inicia o servidor
