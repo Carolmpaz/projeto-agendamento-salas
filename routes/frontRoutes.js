@@ -65,4 +65,6 @@ router.get('/type_classroom', (req, res) => {
   res.render('type_classroom', { title: 'Tipos de Salas' });
 });
 
+
+
 module.exports = router;

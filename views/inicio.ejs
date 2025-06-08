@@ -13,7 +13,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navbar -->
+   
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -34,7 +34,6 @@
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <span class="text-sm font-medium text-gray-700 mr-4">Olá, <%= user.nome %></span>
                     <a href="/auth/logout" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Sair
                     </a>
@@ -43,7 +42,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+   
     <div class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
@@ -57,10 +56,9 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Card de Salas -->
+           
             <div class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow">
                 <div class="p-6">
                     <div class="flex items-center">
@@ -82,7 +80,7 @@
                 </div>
             </div>
 
-            <!-- Card de Minhas Reservas -->
+        
             <div class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow">
                 <div class="p-6">
                     <div class="flex items-center">
@@ -104,7 +102,7 @@
                 </div>
             </div>
 
-            <!-- Card de Nova Reserva -->
+            
             <div class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow">
                 <div class="p-6">
                     <div class="flex items-center">
@@ -128,8 +126,7 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white mt-12">
+  <footer class="bg-white mt-12">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center text-sm text-gray-500">
                 <p>&copy; <%= new Date().getFullYear() %> Sistema de Agendamento de Salas. Todos os direitos reservados.</p>

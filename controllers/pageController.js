@@ -1,4 +1,4 @@
-const supabase = require('../config/supabaseClient');
+const supabase = require('../config/supabase');
 
 const getInicio = async (req, res) => {
   try {
@@ -41,6 +41,24 @@ const getInicio = async (req, res) => {
       error: 'Erro ao carregar as próximas reservas. Por favor, tente novamente.'
     });
   }
+};
+
+const login = async (req, res) => {
+  const { email, senha } = req.body;
+
+  const user = await userService.validarUsuario(email, senha);
+  if (!user) {
+    return res.status(401).json({ error: "Credenciais inválidas" });
+  }
+
+  // GUARDA O USUÁRIO NA SESSÃO
+  req.session.user = {
+    id: user.id,
+    nome: user.nome,
+    email: user.email
+  };
+
+  res.redirect('/dashboard'); // ou qualquer rota pós-login
 };
 
 module.exports = {

@@ -1,6 +1,34 @@
 // controllers/classroomController.js
-
+const express = require('express');
+const router = express.Router();
+const pool = require('../config/db'); // Ajuste para seu client PG
 const classroomService = require('../services/classroomService');
+
+// routes/classroomRoutes.js
+
+
+router.get('/salas', async (req, res) => {
+    try {
+        const { rows } = await pool.query(`
+            SELECT 
+                c.id, 
+                c.nome, 
+                c.capacidade, 
+                c.localizacao, 
+                t.tipo AS tipo_sala 
+            FROM classroom c
+            JOIN type_classroom t ON c.id_type_classroom = t.id
+        `);
+
+        res.render('classroom', { salas: rows });
+
+    } catch (error) {
+        console.error('Erro ao buscar salas:', error);
+        res.status(500).send('Erro ao buscar salas');
+    }
+});
+
+
 
 const getAllClassroom = async (req, res) => {
   try {
