@@ -31,7 +31,7 @@ CREATE TABLE status_reservation (
 -- Tabela reservation
 CREATE TABLE reservation (
     id_reservation SERIAL PRIMARY KEY,
-    id_users INT NOT NULL,
+    id_users UUID NOT NULL,
     id_classroom INT NOT NULL,
     data_reservation DATE NOT NULL,
     hora_inicio TIME NOT NULL,

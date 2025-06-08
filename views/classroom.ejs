@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salas - Meet Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+   
+   <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                          <a href="/inicio" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-600">
+                            <img src="../assets/logo_azul.png" alt="Logo" class="h-8 w-auto">
+                        </a>
+                        
+                    </div>
+                    <div class="hidden md:ml-8 md:flex md:space-x-8">
+                        <a href="/salas" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-600">
+                            Salas
+                        </a>
+                        <a href="/minhas-reservas" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-600">
+                            Minhas Reservas
+                        </a>
+                        <a href="/nova-reserva" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-600">
+                            Nova Reserva
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    
+    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Salas Disponíveis</h1>
+
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <% if (salas.length === 0) { %>
+                <p class="text-gray-600">Nenhuma sala encontrada.</p>
+            <% } %>
+            <% salas.forEach(sala => { %>
+                <div class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow">
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-1"><%= sala.nome %></h2>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Tipo:</strong> <%= sala.tipo_sala %></p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Capacidade:</strong> <%= sala.capacidade %> pessoas</p>
+                        <p class="text-sm text-gray-600"><strong>Localização:</strong> <%= sala.localizacao %></p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+  
+    <footer class="bg-white mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-gray-500">
+                <p>&copy; <%= new Date().getFullYear() %> Sistema de Agendamento de Salas. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
