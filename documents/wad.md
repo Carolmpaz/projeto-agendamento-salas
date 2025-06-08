@@ -124,3 +124,112 @@ CREATE TABLE reserva (
 
 O modelo físico do sistema foi implementado em linguagem SQL e descreve como os dados serão armazenados no banco de dados relacional. Ele define cinco tabelas principais: usuario, sala, reserva, tipo_sala e status_reserva. Cada tabela possui uma chave primária (id) do tipo serial/incremental, usada para identificar de forma única cada registro. As tabelas estão conectadas por chaves estrangeiras, que garantem a integridade referencial entre os dados. Por exemplo, a tabela reserva contém referências a usuario, sala e status_reserva, assegurando que uma reserva sempre pertença a um usuário, esteja associada a uma sala válida e possua um status definido. Além disso, foram definidos os tipos de dados adequados para cada campo (como VARCHAR para textos, DATE e TIME para datas e horários), promovendo maior eficiência e controle no armazenamento das informações. Esse modelo é fundamental para que a aplicação funcione corretamente e consiga atender às necessidades da instituição de forma segura e escalável.
 
+## 3. Lógica de Negócio (Model)
+A camada de Model é responsável por representar os dados da aplicação e fornecer a estrutura necessária para validar, acessar e manipular essas informações. Neste projeto, os models foram implementados utilizando o ORM Sequelize, que facilita a comunicação entre o código JavaScript e o banco de dados relacional PostgreSQL.
+
+Cada tabela do banco de dados possui um model correspondente. Esses models são responsáveis por definir os campos, seus tipos, validações e relacionamentos. Além disso, foram utilizadas bibliotecas como o Joi para validar os dados antes de qualquer operação (criação, atualização, etc.), garantindo a integridade das informações.
+
+### 3.1. Model: Usuário
+Define atributos como nome, email e senha, além de validar o formato de email e aplicar restrições de preenchimento obrigatório.
+
+### 3.2. Model: Sala
+Representa as salas disponíveis para agendamento, com atributos como nome, capacidade, localização e chave estrangeira para o tipo de sala.
+
+### 3.3. Model: Tipo de Sala
+Model auxiliar que classifica cada sala com base em sua finalidade (ex: auditório, laboratório, sala comum).
+
+### 3.4. Model: Status de Reserva
+Define o status atual de cada reserva (ex: pendente, confirmada, cancelada).
+
+### 3.5. Model: Reserva
+Conecta os usuários às salas disponíveis, com campos de data, horário e status da reserva. Esse model possui várias chaves estrangeiras e é central na lógica do sistema.
+
+Com a definição clara e validada dos models, a aplicação consegue se manter coesa, modular e escalável.
+
+## 4. Desenvolvimento da Interface (View)
+A camada de View é responsável por exibir as informações ao usuário e coletar suas interações com o sistema. As páginas foram desenvolvidas com a tecnologia EJS (Embedded JavaScript Templates) e estilizadas com Tailwind CSS, promovendo uma visualização limpa, moderna e responsiva.
+
+
+### 4.1. Página de Login
+Esta é a porta de entrada da aplicação. Permite que usuários previamente cadastrados acessem suas funcionalidades com email e senha.
+
+**Funcionalidades:**
+
+- Campo de email e senha com validação.
+- Link para acesso à página de cadastro.
+
+<div align="center">
+   <sub>Imagem 3: Página de login </sub><br>
+   <img src="../assets/login.png" width="100%" 
+   alt="Título"><br>
+ </div>
+
+### 4.2. Página de Cadastro
+Permite que novos usuários se registrem no sistema, fornecendo nome completo, email e senha.
+
+**Funcionalidades:**
+
+- Campos com validação de preenchimento.
+- Verificação de unicidade do email.
+- Redirecionamento para login após o cadastro.
+
+<div align="center">
+   <sub>Imagem 4: Página de cadastro</sub><br>
+   <img src="../assets/cadastro.png" width="100%" 
+   alt="Título"><br>
+ </div>
+
+### 4.3. Página Inicial
+Página exibida após o login, que pode conter um resumo das funcionalidades disponíveis ou um painel inicial de boas-vindas.
+
+**Funcionalidades:**
+
+- Links para as demais seções do sistema (salas, reservas, etc.).
+- Mensagens de boas-vindas e informações da plataforma.
+
+<div align="center">
+   <sub>Imagem 5: Página de Início</sub><br>
+   <img src="../assets/inicio.png" width="100%" 
+   alt="Título"><br>
+ </div>
+
+### 4.4. Página de Gerenciamento de Salas
+Exibe uma tabela com as salas registradas.
+
+**Funcionalidades:**
+
+- Tabela com listagem de todas as salas.
+
+
+<div align="center">
+   <sub>Imagem 6: Página de Salas disponíveis</sub><br>
+   <img src="../assets/salas.png" width="100%" 
+   alt="Título"><br>
+ </div>
+
+### 4.5. Página de Nova Reserva
+Formulário para criar uma nova reserva de sala.
+
+**Funcionalidades:**:
+
+- Seleção de data, horário, sala e status.
+- Envio dos dados ao servidor para registro da reserva.
+
+<div align="center">
+   <sub>Imagem 7: Página de novas reservas</sub><br>
+   <img src="../assets/nova_reserva.png" width="100%" 
+   alt="Título"><br>
+ </div>
+
+### 4.6. Página Minhas Reservas
+Mostra todas as reservas realizadas pelo usuário logado.
+
+**Funcionalidades:**
+
+- Tabela com detalhes das reservas feitas.
+
+<div align="center">
+   <sub>Imagem 8: Página de minhas reservas </sub><br>
+   <img src="../assets/minhas_reservas.png" width="100%" 
+   alt="Título"><br>
+ </div>
