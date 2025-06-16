@@ -76,6 +76,7 @@ db.query('SELECT 1')
       }
     });
 
+    app.use('/', require('./routes/reservarRoutes'));
     app.use('/', require('./routes/frontRoutes'));
 
     // Erro 404
