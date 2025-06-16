@@ -1,17 +1,16 @@
-const supabase = require('../config/supabase');
+const { supabase } = require('../config/supabaseClient');
 
 const getInicio = async (req, res) => {
   try {
-    // Busca as próximas 5 reservas do usuário
     const { data: proximasReservas, error } = await supabase
-      .from('reserva')
+      .from('reservation')
       .select(`
-        id_reserva,
-        data_hora_inicio,
-        data_hora_fim,
+        id_reservation,
+        hora_inicio,
+        hora_fim,
         descricao,
         status,
-        sala:classroom (
+        classroom (
           id_classroom,
           nome,
           capacidade,
@@ -22,45 +21,44 @@ const getInicio = async (req, res) => {
           )
         )
       `)
-      .eq('id_usuario', req.user.id)
+      .eq('id_users', req.session.user.id) // Pega o ID da sessão
       .eq('status', 'agendada')
-      .gte('data_hora_inicio', new Date().toISOString())
-      .order('data_hora_inicio', { ascending: true })
+      .gte('hora_inicio', new Date().toISOString())
+      .order('hora_inicio', { ascending: true })
       .limit(5);
 
     if (error) throw error;
 
-    res.render('inicio', { 
+    res.render('inicio', {
+      user: req.session.user,
       proximasReservas,
-      error: null 
+      error: null
     });
   } catch (error) {
     console.error('Erro ao carregar página inicial:', error);
-    res.status(500).render('inicio', { 
+    res.status(500).render('inicio', {
+      user: req.session.user,
       proximasReservas: [],
       error: 'Erro ao carregar as próximas reservas. Por favor, tente novamente.'
     });
   }
 };
 
-const login = async (req, res) => {
-  const { email, senha } = req.body;
+const getSalas = (req, res) => {
+  res.render('classroom', { title: 'Salas', user: req.session.user });
+};
 
-  const user = await userService.validarUsuario(email, senha);
-  if (!user) {
-    return res.status(401).json({ error: "Credenciais inválidas" });
-  }
+const getNovaReserva = (req, res) => {
+  res.render('nova-reserva', { title: 'Nova Reserva', user: req.session.user });
+};
 
-  // GUARDA O USUÁRIO NA SESSÃO
-  req.session.user = {
-    id: user.id,
-    nome: user.nome,
-    email: user.email
-  };
-
-  res.redirect('/dashboard'); // ou qualquer rota pós-login
+const getMinhasReservas = (req, res) => {
+  res.render('minhas-reservas', { title: 'Minhas Reservas', user: req.session.user });
 };
 
 module.exports = {
-  getInicio
-}; 
+  getInicio,
+  getSalas,
+  getNovaReserva,
+  getMinhasReservas
+};

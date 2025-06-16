@@ -4,7 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const db = require('./config/db');
 
-
+const { verificarAutenticacao } = require('./middleware/auth');
 
 const app = express();
 
@@ -13,12 +13,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/assets', express.static('assets'));
 
-// Sessão - declaração única, corrigida
+// Sessão
 app.use(session({
   secret: process.env.SESSION_SECRET || 'seusegredosecreto',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // só para dev/local sem HTTPS
+  cookie: { secure: false } // só para dev/local, use true em produção com HTTPS
 }));
 
 // View engine
@@ -41,11 +41,14 @@ db.query('SELECT 1')
     app.use('/status_reservation/api', require('./routes/status_reservationRoutes'));
     app.use('/auth', require('./routes/authRoutes'));
 
-    const frontRoutes = require('./routes/reservarRoutes');
-    app.use('/', frontRoutes);
+    // Rotas front-end que precisam de autenticação podem usar middleware:
+    // Exemplo: rota '/inicio' protegida
+    app.get('/inicio', verificarAutenticacao, (req, res) => {
+      res.render('inicio', { user: req.session.user });
+    });
 
-    // Rotas de páginas (front-end)
-    app.get('/salas', async (req, res) => {
+    // Rotas para páginas front
+    app.get('/salas', verificarAutenticacao, async (req, res) => {
       try {
         const result = await db.query(`
           SELECT c.id_classroom, c.nome, c.capacidade, c.localizacao, t.descricao AS type_classroom
@@ -59,7 +62,7 @@ db.query('SELECT 1')
       }
     });
 
-    app.get('/nova-reserva', async (req, res) => {
+    app.get('/nova-reserva', verificarAutenticacao, async (req, res) => {
       try {
         const salas = await db.query('SELECT id_classroom, nome FROM classroom');
         const statusList = await db.query('SELECT id_status, descricao FROM status_reservation');
@@ -73,6 +76,7 @@ db.query('SELECT 1')
       }
     });
 
+    app.use('/', require('./routes/reservarRoutes'));
     app.use('/', require('./routes/frontRoutes'));
 
     // Erro 404
