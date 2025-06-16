@@ -14,11 +14,11 @@ const getAllReservation = async () => {
 };
 
 // Função para criar um novo usuário
-const createReservation = async (id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
+const createReservation = async (i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
   try {
     const result = await db.query(
-      'INSERT INTO reservation (id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status]
+      'INSERT INTO reservation (i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status]
     );
     return result.rows[0];
   } catch (error) {
@@ -38,11 +38,11 @@ const getReservationById = async (id) => {
 };
 
 // Atualizar usuário
-const updateReservation = async (id, id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
+const updateReservation = async (id, i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
   try {
     const result = await db.query(
-      'UPDATE reservation SET id_users = $1, id_classroom = $2, data_reservation = $3, hora_inicio = $4, hora_fim = $5, id_status = $6 WHERE id_reservation = $7 RETURNING *',
-      [id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status, id]
+      'UPDATE reservation SET i = $1, id_classroom = $2, data_reservation = $3, hora_inicio = $4, hora_fim = $5, id_status = $6 WHERE id_reservation = $7 RETURNING *',
+      [i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status, id]
     );
     return result.rows[0];
   } catch (error) {

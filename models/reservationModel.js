@@ -1,36 +1,17 @@
-const db = require('../config/db');
+const Joi = require('joi');
 
-class Reservation {
-  static async getAll() {
-    const result = await db.query('SELECT * FROM reservation');
-    return result.rows;
-  }
+const reservationSchema = Joi.object({
+  hora_inicio: Joi.date().iso().required().label('Data e hora de início'),
+  hora_fim: Joi.date().iso().required().label('Data e hora de fim'),
+  data_reservation: Joi.date().iso().required().label('Data da reserva'),
+  status: Joi.string().valid('agendada', 'cancelada', 'finalizada').optional(),
+  id_classroom: Joi.number().integer().required(),
+  id_users: Joi.string().guid({ version: 'uuidv4' }).optional(),
+  id_status: Joi.number().integer().required(),  // 🔥 Adicionado aqui
 
-  static async getById(id) {
-    const result = await db.query('SELECT * FROM reservation WHERE id_reservation = $1', [id]);
-    return result.rows[0];
-  }
+});
 
-  static async create(data) {
-    const result = await db.query(
-      'INSERT INTO reservation (id_users, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [data.id_users, data.id_classroom, data.data_reservation, data.hora_inicio, data.hora_fim, data.id_status]
-    );
-    return result.rows[0];
-  }
+// Schema para o usuário (sem id_users)
+const reservationInputSchema = reservationSchema.fork(['id_users'], (schema) => schema.forbidden());
 
-  static async update(id, data) {
-    const result = await db.query(
-      'UPDATE reservation SET id_users = $1, id_classroom = $2, data_reservation = $3, hora_inicio = $4, hora_fim = $5, id_status = $6 WHERE id_reservation = $7 RETURNING *',
-      [data.id_users, data.id_classroom, data.data_reservation, data.hora_inicio, data.hora_fim, data.id_status, id]
-    );
-    return result.rows[0];
-  }
-
-  static async delete(id) {
-    const result = await db.query('DELETE FROM reservation WHERE id_reservation = $1 RETURNING *', [id]);
-    return result.rowCount > 0;
-  }
-}
-
-module.exports = Reservation;
+module.exports = { reservationSchema, reservationInputSchema };

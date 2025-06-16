@@ -7,7 +7,7 @@ class User {
   }
 
   static async getById(id) {
-    const result = await db.query('SELECT * FROM users WHERE id_users = $1', [id]);
+    const result = await db.query('SELECT * FROM users WHERE ui = $1', [id]);
     return result.rows[0];
   }
 
@@ -21,14 +21,14 @@ class User {
 
   static async update(id, data) {
     const result = await db.query(
-      'UPDATE users SET nome = $1, email = $2 WHERE id_users = $3 RETURNING *',
+      'UPDATE users SET nome = $1, email = $2 WHERE ui = $3 RETURNING *',
       [data.nome, data.email, id]
     );
     return result.rows[0];
   }
 
   static async delete(id) {
-    const result = await db.query('DELETE FROM users WHERE id_users = $1 RETURNING *', [id]);
+    const result = await db.query('DELETE FROM users WHERE ui = $1 RETURNING *', [id]);
     return result.rowCount > 0;
   }
 }

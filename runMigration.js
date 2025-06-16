@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const db = require('../config/db');
+const db = require('./config/db');
 
 // Ordena os arquivos por nome (timestamp)
 const migrationsDir = path.join(__dirname, 'migrations');
