@@ -21,7 +21,7 @@ const getInicio = async (req, res) => {
           )
         )
       `)
-      .eq('id_users', req.session.user.id) // Pega o ID da sessão
+      .eq('id_users', req.session.user.id) 
       .eq('status', 'agendada')
       .gte('hora_inicio', new Date().toISOString())
       .order('hora_inicio', { ascending: true })

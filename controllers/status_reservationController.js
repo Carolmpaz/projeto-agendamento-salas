@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Ajuste para seu client PG
+const db = require('../config/db'); 
 const statusReservationSchema = require('../models/status_reservationModel');
 const express = require('express');
 const router = express.Router();

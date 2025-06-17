@@ -1,8 +1,8 @@
-// services/userService.js
+
 
 const supabase = require('../config/supabaseClient');
 
-// Função para obter todos os usuários
+
 const getAllUsers = async () => {
   try {
     const { data, error } = await supabase
@@ -16,10 +16,10 @@ const getAllUsers = async () => {
   }
 };
 
-// Função para criar um novo usuário
+
 const createUser = async (nome, email, senha) => {
   try {
-    // Registra o usuário no sistema de autenticação do Supabase
+    
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -38,7 +38,7 @@ const createUser = async (nome, email, senha) => {
   }
 };
 
-// Função para obter um usuário por ID
+
 const getUserById = async (id) => {
   try {
     const { data, error } = await supabase
@@ -54,7 +54,7 @@ const getUserById = async (id) => {
   }
 };
 
-// Atualizar usuário
+
 const updateUser = async (id, nome, email) => {
   try {
     const { data, error } = await supabase
@@ -71,7 +71,7 @@ const updateUser = async (id, nome, email) => {
   }
 };
 
-// Deletar usuário
+
 const deleteUser = async (id) => {
   try {
     const { data, error } = await supabase
@@ -88,7 +88,7 @@ const deleteUser = async (id) => {
   }
 };
 
-// Função para login do usuário
+
 const loginUser = async (email, senha) => {
   try {
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -104,7 +104,7 @@ const loginUser = async (email, senha) => {
   }
 };
 
-// Função para obter dados do usuário atual
+
 const getCurrentUser = async () => {
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
@@ -117,7 +117,7 @@ const getCurrentUser = async () => {
   }
 };
 
-// Função para logout do usuário
+
 const logoutUser = async () => {
   try {
     const { error } = await supabase.auth.signOut();

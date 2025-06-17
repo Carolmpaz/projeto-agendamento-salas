@@ -1,9 +1,8 @@
-// services/type_classroomService.js
+
 
 const db = require('../config/db');
 
 
-// Função para obter todos os usuários
 const getAllType_classroom = async () => {
   try {
     const result = await db.query('SELECT * FROM type_classroom');
@@ -13,7 +12,6 @@ const getAllType_classroom = async () => {
   }
 };
 
-// Função para criar um novo usuário
 const createType_classroom = async (descricao) => {
   try {
     const result = await db.query(
@@ -27,7 +25,6 @@ const createType_classroom = async (descricao) => {
 };
 
 
-// Função para obter um usuário por ID
 const getType_classroomById = async (id) => {
   try {
     const result = await db.query('SELECT * FROM type_classroom WHERE id_type_classroom = $1', [id]);
@@ -37,7 +34,7 @@ const getType_classroomById = async (id) => {
   }
 };
 
-// Atualizar usuário
+
 const updateType_classroom = async (id, descricao) => {
   try {
     const result = await db.query(
@@ -50,7 +47,6 @@ const updateType_classroom = async (id, descricao) => {
   }
 };
 
-// Deletar usuário
 const deleteType_classroom = async (id) => {
   try {
     const result = await db.query('DELETE FROM type_classroom WHERE id_type_classroom = $1 RETURNING *', [id]);

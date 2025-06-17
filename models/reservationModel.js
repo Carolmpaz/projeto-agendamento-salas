@@ -7,11 +7,11 @@ const reservationSchema = Joi.object({
   status: Joi.string().valid('agendada', 'cancelada', 'finalizada').optional(),
   id_classroom: Joi.number().integer().required(),
   id_users: Joi.string().guid({ version: 'uuidv4' }).optional(),
-  id_status: Joi.number().integer().required(),  // 🔥 Adicionado aqui
+  id_status: Joi.number().integer().required(),  
 
 });
 
-// Schema para o usuário (sem id_users)
+
 const reservationInputSchema = reservationSchema.fork(['id_users'], (schema) => schema.forbidden());
 
 module.exports = { reservationSchema, reservationInputSchema };

@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Ajuste para seu client PG
+const db = require('../config/db'); 
 const classroomSchema = require('../models/ClassroomModel');
 
 

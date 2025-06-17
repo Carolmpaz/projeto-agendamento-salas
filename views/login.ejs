@@ -48,20 +48,20 @@
     </div>
 
     <script>
-        // Função para mostrar mensagem de erro
+      
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.classList.remove('hidden');
         }
 
-        // Função para esconder mensagem de erro
+       
         function hideError() {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.classList.add('hidden');
         }
 
-        // Manipular envio do formulário
+      
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             hideError();
@@ -81,7 +81,7 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Redirecionar para a página inicial
+                   
                     window.location.replace('/inicio');
                 } else {
                     showError(data.error || 'Erro ao fazer login');
@@ -92,7 +92,7 @@
             }
         });
 
-        // Verificar se há mensagem de sucesso na URL
+       
         const urlParams = new URLSearchParams(window.location.search);
         const msg = urlParams.get('msg');
         

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const pool = require('../db'); // conexão com o PostgreSQL
+const pool = require('../db'); 
 const Joi = require('joi');
 
 const schema = Joi.object({
