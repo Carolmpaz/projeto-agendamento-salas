@@ -1,9 +1,10 @@
 const db = require('../config/db');
 const { reservationSchema, reservationInputSchema } = require('../models/reservationModel');
+const { verificarAutenticacao } = require('../middleware/auth');
 
 module.exports = {
 
-  // 🔍 Buscar todas as reservas
+  
   async getAllReservation(req, res) {
     try {
       const result = await db.query('SELECT * FROM reservation');
@@ -14,7 +15,7 @@ module.exports = {
     }
   },
 
-  // 🔍 Buscar reserva por ID
+
   async getReservationById(req, res) {
     const { id } = req.params;
     try {
@@ -29,7 +30,7 @@ module.exports = {
     }
   },
 
-  // 📄 Renderizar página de nova reserva
+
   async renderNovaReserva(req, res) {
     try {
       const classrooms = await db.query('SELECT * FROM classroom');
@@ -41,20 +42,20 @@ module.exports = {
     }
   },
 
-  // ➕ Criar nova reserva
+ 
   async createReservation(req, res) {
     const { data_reservation, hora_inicio, hora_fim, id_classroom, id_status } = req.body;
 
-    // Monta ISO para validação Joi
+ 
     const horaInicioISO = `${data_reservation}T${hora_inicio.length === 5 ? hora_inicio + ':00' : hora_inicio}`;
     const horaFimISO = `${data_reservation}T${hora_fim.length === 5 ? hora_fim + ':00' : hora_fim}`;
 
     const reservationData = {
-      hora_inicio: horaInicioISO, // Para validação Joi
+      hora_inicio: horaInicioISO,
       hora_fim: horaFimISO,
       id_classroom: parseInt(id_classroom),
       id_status: parseInt(id_status) || 1,
-      data_reservation // Para inserir no banco
+      data_reservation 
     };
 
     const { error } = reservationInputSchema.validate(reservationData);
@@ -67,7 +68,7 @@ module.exports = {
       return res.status(401).json({ error: 'Usuário não autenticado' });
     }
 
-    // Extrai apenas o horário para o banco
+
     const horaInicioBanco = hora_inicio.length === 5 ? hora_inicio + ':00' : hora_inicio;
     const horaFimBanco = hora_fim.length === 5 ? hora_fim + ':00' : hora_fim;
 
@@ -87,7 +88,7 @@ module.exports = {
     }
   },
 
-  // ✏️ Atualizar reserva
+ 
   async updateReservation(req, res) {
     const { id } = req.params;
     const { error, value } = reservationSchema.validate(req.body);
@@ -123,7 +124,7 @@ module.exports = {
     }
   },
 
-  // ❌ Deletar reserva
+
   async deleteReservation(req, res) {
     const { id } = req.params;
     try {
@@ -136,5 +137,22 @@ module.exports = {
       console.error('Erro ao deletar reserva:', err);
       res.status(500).json({ error: 'Erro ao deletar reserva' });
     }
-  }
+  },
+
+  novaReserva: [
+    verificarAutenticacao,
+    async (req, res) => {
+      try {
+        const salas = await db.query('SELECT id_classroom, nome FROM classroom');
+        const statusList = await db.query('SELECT id_status, descricao FROM status_reservation');
+        res.render('nova_reserva', {
+          salas: salas.rows,
+          statusList: statusList.rows
+        });
+      } catch (error) {
+        console.error('Erro ao carregar nova reserva:', error);
+        res.status(500).send('Erro interno');
+      }
+    }
+  ]
 };

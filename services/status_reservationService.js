@@ -1,9 +1,9 @@
-// services/status_reservationService.js
+
 
 const db = require('../config/db');
 
 
-// Função para obter todos os usuários
+
 const getAllStatus_reservation = async () => {
   try {
     const result = await db.query('SELECT * FROM status_reservation');
@@ -13,7 +13,7 @@ const getAllStatus_reservation = async () => {
   }
 };
 
-// Função para criar um novo usuário
+
 const createStatus_reservation = async (descricao) => {
   try {
     const result = await db.query(
@@ -27,7 +27,7 @@ const createStatus_reservation = async (descricao) => {
 };
 
 
-// Função para obter um usuário por ID
+
 const getStatus_reservationById = async (id) => {
   try {
     const result = await db.query('SELECT * FROM status_reservation WHERE id_status = $1', [id]);
@@ -37,7 +37,7 @@ const getStatus_reservationById = async (id) => {
   }
 };
 
-// Atualizar usuário
+
 const updateStatus_reservation = async (id, descricao) => {
   try {
     const result = await db.query(
@@ -50,7 +50,7 @@ const updateStatus_reservation = async (id, descricao) => {
   }
 };
 
-// Deletar usuário
+
 const deleteStatus_reservation = async (id) => {
   try {
     const result = await db.query('DELETE FROM status_reservation WHERE id_status = $1 RETURNING *', [id]);

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-// Middleware de autenticação
+
 const requireAuth = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect('/login');
@@ -10,37 +10,37 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
-// Página inicial (login)
+
 router.get('/', (req, res) => {
     res.redirect('/login');
 });
 
-// Página de login
+
 router.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
 
-// Página de cadastro
+
 router.get('/cadastro', (req, res) => {
     res.render('cadastro', { error: null });
 });
 
-// Página inicial após login
+
 router.get('/inicio', (req, res) => {
     res.render('inicio', { user: req.session.user });
 });
 
-// Página de listagem de salas
+
 router.get('/', (req, res) => {
     res.render('salas');
 });
 
-// Página de minhas reservas
+
 router.get('/', (req, res) => {
     res.render('minhas-reservas');
   });
 
-// Página de nova reserva
+
 router.get('/', (req, res) => {
     res.render('nova-reserva');
 });

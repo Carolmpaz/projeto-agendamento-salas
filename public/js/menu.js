@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebar.classList.toggle('active');
   });
 
-  // Fechar o menu quando clicar fora dele
+  
   document.addEventListener('click', function(event) {
     if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
       sidebar.classList.remove('active');

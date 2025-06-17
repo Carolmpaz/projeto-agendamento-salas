@@ -1,9 +1,8 @@
-// services/reservationService.js
 
 const db = require('../config/db');
 
 
-// Função para obter todos os usuários
+
 const getAllReservation = async () => {
   try {
     const result = await db.query('SELECT * FROM reservation');
@@ -13,7 +12,7 @@ const getAllReservation = async () => {
   }
 };
 
-// Função para criar um novo usuário
+
 const createReservation = async (i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
   try {
     const result = await db.query(
@@ -27,7 +26,6 @@ const createReservation = async (i, id_classroom, data_reservation, hora_inicio,
 };
 
 
-// Função para obter um usuário por ID
 const getReservationById = async (id) => {
   try {
     const result = await db.query('SELECT * FROM reservation WHERE id_reservation = $1', [id]);
@@ -37,7 +35,7 @@ const getReservationById = async (id) => {
   }
 };
 
-// Atualizar usuário
+
 const updateReservation = async (id, i, id_classroom, data_reservation, hora_inicio, hora_fim, id_status) => {
   try {
     const result = await db.query(
@@ -50,7 +48,6 @@ const updateReservation = async (id, i, id_classroom, data_reservation, hora_ini
   }
 };
 
-// Deletar usuário
 const deleteReservation = async (id) => {
   try {
     const result = await db.query('DELETE FROM reservation WHERE id_reservation = $1 RETURNING *', [id]);

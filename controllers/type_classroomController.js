@@ -1,4 +1,4 @@
-const db = require('../config/db'); // Ajuste para seu client PG
+const db = require('../config/db'); 
 const typeClassroomSchema = require('../models/type_classroomModel');
 const express = require('express');
 const router = express.Router();

@@ -1,5 +1,6 @@
-const db = require('../config/db'); // Ajuste para seu client PG
+const db = require('../config/db'); 
 const classroomSchema = require('../models/ClassroomModel');
+const { verificarAutenticacao } = require('../middleware/auth');
 
 
 
@@ -61,6 +62,21 @@ module.exports = {
     }
   },
 
- 
+  listarSalas: [
+    verificarAutenticacao,
+    async (req, res) => {
+      try {
+        const result = await db.query(`
+          SELECT c.id_classroom, c.nome, c.capacidade, c.localizacao, t.descricao AS type_classroom
+          FROM classroom c
+          JOIN type_classroom t ON c.id_type_classroom = t.id_type_classroom
+        `);
+        res.render('classroom', { salas: result.rows });
+      } catch (error) {
+        console.error('Erro ao buscar salas:', error);
+        res.status(500).send('Erro ao buscar salas');
+      }
+    }
+  ],
 
 };
