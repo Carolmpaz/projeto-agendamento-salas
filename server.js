@@ -5,6 +5,9 @@ const session = require('express-session');
 const db = require('./config/db');
 
 const { verificarAutenticacao } = require('./middleware/auth');
+const pageController = require('./controllers/pageController');
+const classroomController = require('./controllers/classroomController');
+const reservationController = require('./controllers/reservationController');
 
 const app = express();
 
@@ -40,38 +43,11 @@ db.query('SELECT 1')
     app.use('/auth', require('./routes/authRoutes'));
 
     
-    app.get('/inicio', verificarAutenticacao, (req, res) => {
-      res.render('inicio', { user: req.session.user });
-    });
+    app.get('/inicio', pageController.inicio);
 
-   
-    app.get('/salas', verificarAutenticacao, async (req, res) => {
-      try {
-        const result = await db.query(`
-          SELECT c.id_classroom, c.nome, c.capacidade, c.localizacao, t.descricao AS type_classroom
-          FROM classroom c
-          JOIN type_classroom t ON c.id_type_classroom = t.id_type_classroom
-        `);
-        res.render('classroom', { salas: result.rows });
-      } catch (error) {
-        console.error('Erro ao buscar salas:', error);
-        res.status(500).send('Erro ao buscar salas');
-      }
-    });
+    app.get('/salas', classroomController.listarSalas);
 
-    app.get('/nova-reserva', verificarAutenticacao, async (req, res) => {
-      try {
-        const salas = await db.query('SELECT id_classroom, nome FROM classroom');
-        const statusList = await db.query('SELECT id_status, descricao FROM status_reservation');
-        res.render('nova_reserva', {
-          salas: salas.rows,
-          statusList: statusList.rows
-        });
-      } catch (error) {
-        console.error('Erro ao carregar nova reserva:', error);
-        res.status(500).send('Erro interno');
-      }
-    });
+    app.get('/nova-reserva', reservationController.novaReserva);
 
     app.use('/', require('./routes/reservarRoutes'));
     app.use('/', require('./routes/frontRoutes'));

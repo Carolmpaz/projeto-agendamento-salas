@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const { reservationSchema, reservationInputSchema } = require('../models/reservationModel');
+const { verificarAutenticacao } = require('../middleware/auth');
 
 module.exports = {
 
@@ -136,5 +137,22 @@ module.exports = {
       console.error('Erro ao deletar reserva:', err);
       res.status(500).json({ error: 'Erro ao deletar reserva' });
     }
-  }
+  },
+
+  novaReserva: [
+    verificarAutenticacao,
+    async (req, res) => {
+      try {
+        const salas = await db.query('SELECT id_classroom, nome FROM classroom');
+        const statusList = await db.query('SELECT id_status, descricao FROM status_reservation');
+        res.render('nova_reserva', {
+          salas: salas.rows,
+          statusList: statusList.rows
+        });
+      } catch (error) {
+        console.error('Erro ao carregar nova reserva:', error);
+        res.status(500).send('Erro interno');
+      }
+    }
+  ]
 };
