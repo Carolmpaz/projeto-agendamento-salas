@@ -2,8 +2,6 @@
 
 Este projeto foi desenvolvido para facilitar o controle e gerenciamento de reservas de salas de aula, oferecendo um sistema completo para cadastro de usuários, definição dos tipos e características das salas, controle dos status das reservas e agendamento das mesmas. O sistema é construído utilizando Node.js e PostgreSQL, e possui uma arquitetura modular que separa responsabilidades em camadas de modelos, serviços e controladores.
 
-
-
 ## Visão Geral do Projeto
 
 O sistema gerencia cinco entidades principais, cada uma representada por uma tabela no banco de dados:
@@ -14,28 +12,12 @@ O sistema gerencia cinco entidades principais, cada uma representada por uma tab
 - **status_reservation**: Estados possíveis para uma reserva, por exemplo: "Pendente", "Confirmada", "Cancelada".
 - **reservation**: Registros das reservas feitas, vinculando usuários, salas, horários e o status atual da reserva.
 
-
-
 ## Tecnologias Utilizadas
 
 - Node.js (v18+)
 - PostgreSQL (v13+)
 - npm (Gerenciador de pacotes)
 - Bibliotecas adicionais para conexão, validação e segurança
-
-
-
-## Estrutura das Tabelas
-
-| Tabela             | Descrição                                                                                  |
-|--------------------|--------------------------------------------------------------------------------------------|
-| `type_classroom`    | Tipos de salas (ex: Laboratório, Auditório)                                                |
-| `classroom`        | Salas cadastradas (nome, capacidade, localização, tipo da sala)                            |
-| `users`            | Usuários do sistema (nome, email, senha criptografada)                                    |
-| `status_reservation` | Status possíveis para reservas (ex: Pendente, Confirmada, Cancelada)                      |
-| `reservation`      | Registros de reservas com usuário, sala, data, horário e status                           |
-
-
 
 ## Instalação e Configuração
 
@@ -44,7 +26,7 @@ O sistema gerencia cinco entidades principais, cada uma representada por uma tab
    ```bash
    git clone https://github.com/carolmpaz/projeto-agendamento-salas.git
    cd projeto-agendamento-salas
- 
+   ```
 
 2. Instale as dependências:
 
@@ -73,17 +55,37 @@ O sistema gerencia cinco entidades principais, cada uma representada por uma tab
    npm run migration
    ```
 
+6. Inicie o servidor em modo de desenvolvimento:
 
+   ```bash
+   npm run dev
+   ```
+
+7. Acesse o sistema no navegador:
+
+   ```
+   http://localhost:3000
+   ```
 
 ## Funcionalidades Principais
 
-* Gerenciamento de tipos de sala (adicionar, editar, excluir)
-* Cadastro e edição das salas com atributos detalhados
-* Cadastro de usuários com autenticação
-* Controle dos status das reservas para fluxo de aprovação/cancelamento
-* Criação, consulta, atualização e exclusão de reservas com validação de horários para evitar conflitos
+- Gerenciamento de tipos de sala (adicionar, editar, excluir).
+- Cadastro e edição das salas com atributos detalhados.
+- Cadastro de usuários com autenticação.
+- Controle dos status das reservas para fluxo de aprovação/cancelamento.
+- Criação, consulta, atualização e exclusão de reservas com validação de horários para evitar conflitos.
 
+## Prints da Interface
 
+![Página Inicial](./assets/inicio.png)
+![Login](./assets/login.png)
+![Cadastro de Salas](./assets/salas.png)
+![Nova Reserva](./assets/nova_reserva.png)
+![Minhas Reservas](./assets/minhas_reservas.png)
+
+## Vídeo de Demonstração
+
+[Link para o vídeo de demonstração](https://youtu.be/uTYkzfYp0qg)
 
 ## Endpoints Disponíveis
 
